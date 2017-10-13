@@ -6,7 +6,7 @@ sampleSize <- 31
 # create independent x-values 
 x <- (-(sampleSize-1)/2):((sampleSize-1)/2)
 # create dependent values according to ax + b + N(0,sd)
-y <-  trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
+y <- trueA * x + trueB + rnorm(n=sampleSize,mean=0,sd=trueSd)
 
 plot(x,y, main="Test Data")
 
@@ -18,7 +18,7 @@ likelihood <- function(param){
   pred = a*x + b
   singlelikelihoods = dnorm(y, mean = pred, sd = sd, log = T)
   sumll = sum(singlelikelihoods)
-  return(sumll)   
+  return(sumll) 
 }
 
 # Example: plot the likelihood profile of the slope a
@@ -73,6 +73,7 @@ acceptance = 1-mean(duplicated(chain[-(1:burnIn),]))
 
 ### Summary: #######################
 
+graphthese<-function(chain, burnIn, trueA, trueB, trueSd){
 par(mfrow = c(2,3))
 hist(chain[-(1:burnIn),1],nclass=30, , main="Posterior of a", xlab="True value = red line" )
 abline(v = mean(chain[-(1:burnIn),1]))
@@ -89,6 +90,8 @@ plot(chain[-(1:burnIn),2], type = "l", xlab="True value = red line" , main = "Ch
 abline(h = trueB, col="red" )
 plot(chain[-(1:burnIn),3], type = "l", xlab="True value = red line" , main = "Chain values of sd", )
 abline(h = trueSd, col="red" )
+}
+graphthese(chain, burnIn, trueA, trueB, trueSd)
 
 # for comparison:
 summary(lm(y~x))
